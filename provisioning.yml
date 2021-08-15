@@ -1,0 +1,29 @@
+---
+- hosts: all
+  tasks:
+    - name: "Install packages for the operation system"
+      apt:
+        name: "{{ item }}"
+        state: latest
+      become: yes
+      with_items:
+        - php5
+        - apache2
+        - libapache2-mod-php5
+        - php5-gd
+        - libssh2-php
+        - php5-mcrypt
+        - mysql-server-5.6
+        - python-mysqldb
+        - php5-mysql
+    - name: "Create a new database MySQL"
+      mysql_db:
+        name: wordpress_db
+        login_user: root
+        state: present
+    - name: "Create a new user into database"
+      mysql_user:
+        name: bob
+        password: 12345
+        priv: "*.*:ALL,GRANT"
+        state: present
