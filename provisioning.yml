@@ -16,14 +16,29 @@
         - mysql-server-5.6
         - python-mysqldb
         - php5-mysql
+
     - name: "Create a new database MySQL"
       mysql_db:
         name: wordpress_db
         login_user: root
         state: present
+
     - name: "Create a new user into database"
       mysql_user:
-        name: bob
+        login_user: root
+        name: wordpress_user
         password: 12345
-        priv: "*.*:ALL,GRANT"
+        priv: "wordpress_db.*:ALL"
         state: present
+
+    - name: "Download the installation file from WordPress"
+      get_url:
+        url: https://wordpress.org/latest.tar.gz'
+        dest: "/tmp/wordpress.tar.gz"
+
+    - name: "Unzip the file"
+      unarchive:
+        src: "/tmp/wordpress.tar.gz"
+        dest: /var/www/
+        remote_src: yes
+      become: yes
