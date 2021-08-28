@@ -104,9 +104,9 @@
       become: yes
 
     - name: "Set apache server to host wordpress"
-      copy:
-        src: files/000-default.conf
-        dest: /etc/apache2/sites-available/000-default.conf
+      template:
+        src: "templates/000-default.conf.j2"
+        dest: "/etc/apache2/sites-available/000-default.conf"
       notify:
         - restart apache
       become: yes
