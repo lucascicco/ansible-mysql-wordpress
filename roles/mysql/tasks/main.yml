@@ -1,0 +1,35 @@
+- name: "Install operation system dependencies"
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+    name: "{{ item }}"
+    state: latest
+  become: yes
+  with_items:
+    - mysql-server-5.6
+    - python-mysqldb
+
+- name: "Create a new database MySQL"
+  mysql_db:
+    name: "{{ wp_db_name }}"
+    login_user: root
+    state: present
+
+- name: "Create a new user into database"
+  mysql_user:
+    login_user: root
+    name: "{{ wp_username }}"
+    password: "{{ wp_user_password }} "
+    priv: "{{  wp_db_name }}.*:ALL"
+    state: present
+    host: "{{ item }}"
+  with_items:
+    - "{{ wp_host_ip }}"
+
+- name: "Sets up MySQL to accept remote connections"
+  copy:
+    src: files/my.cnf
+    dest: /etc/mysql/my.cnf
+  become: yes
+  notify:
+    - restart mysql
