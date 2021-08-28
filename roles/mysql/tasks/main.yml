@@ -19,17 +19,17 @@
   mysql_user:
     login_user: root
     name: "{{ wp_username }}"
-    password: "{{ wp_user_password }} "
-    priv: "{{  wp_db_name }}.*:ALL"
+    password: "{{ wp_user_password }}"
+    priv: "{{ wp_db_name }}.*:ALL"
     state: present
     host: "{{ item }}"
   with_items:
-    - "{{ wp_host_ip }}"
+    - "{{ wp_host_ip}}"
 
 - name: "Sets up MySQL to accept remote connections"
   copy:
-    src: files/my.cnf
-    dest: /etc/mysql/my.cnf
+    src: "files/my.cnf"
+    dest: "/etc/mysql/my.cnf"
   become: yes
   notify:
     - restart mysql
