@@ -2,7 +2,7 @@
 
 ### Introduction
 
-This project is the union of a webserver with a database running in two different virtual machines (created using vagrant, settings are in vagrantFile), but
+This project is the union of a webserver (php + wordpress) with a database (my-sql) running in two different virtual machines (created using vagrant, settings are in vagrantFile), but
 ansible provisions both with the enviroment variables, ip address, permissions and etc. Summing up, I've two roles: mysql and wordpress, the reason is to "simulate"
 a regular web-application on production, then after setting up the machine which runs the database, I set the wordpress to be up running but connected with the database already up.
 
